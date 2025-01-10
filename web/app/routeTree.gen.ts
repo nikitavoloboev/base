@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
+import { Route as TryAuthImport } from './routes/try/auth'
 
 // Create/Update Routes
 
@@ -24,6 +25,12 @@ const LayoutRoute = LayoutImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TryAuthRoute = TryAuthImport.update({
+  id: '/try/auth',
+  path: '/try/auth',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -45,6 +52,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutImport
       parentRoute: typeof rootRoute
     }
+    '/try/auth': {
+      id: '/try/auth'
+      path: '/try/auth'
+      fullPath: '/try/auth'
+      preLoaderRoute: typeof TryAuthImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -53,36 +67,41 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof LayoutRoute
+  '/try/auth': typeof TryAuthRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof LayoutRoute
+  '/try/auth': typeof TryAuthRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_layout': typeof LayoutRoute
+  '/try/auth': typeof TryAuthRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | ''
+  fullPaths: '/' | '' | '/try/auth'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | ''
-  id: '__root__' | '/' | '/_layout'
+  to: '/' | '' | '/try/auth'
+  id: '__root__' | '/' | '/_layout' | '/try/auth'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LayoutRoute: typeof LayoutRoute
+  TryAuthRoute: typeof TryAuthRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LayoutRoute: LayoutRoute,
+  TryAuthRoute: TryAuthRoute,
 }
 
 export const routeTree = rootRoute
@@ -96,7 +115,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/_layout"
+        "/_layout",
+        "/try/auth"
       ]
     },
     "/": {
@@ -104,6 +124,9 @@ export const routeTree = rootRoute
     },
     "/_layout": {
       "filePath": "_layout.tsx"
+    },
+    "/try/auth": {
+      "filePath": "try/auth.tsx"
     }
   }
 }
